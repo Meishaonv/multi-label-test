@@ -1,0 +1,136 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Project Title</title>
+  <meta name="description" content="Project description">
+  <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <link rel="stylesheet" href="style.css?v=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+   <div id="container" style="text-align:center;margin-top:30px">
+    <div id="container2" style="width:70%;margin-left: 15%;margin-right: 2%;">
+        <div>Terms you would enter if you were trying to find this image? (You can select multiple options)</div>
+
+
+        <div class="row">
+            <div class="col-sm-10" style="text-align:right">
+                <div id="top" style="margin-top:20px">
+                    <img id="imgplace" src="" data-idn="" width="500">
+                </div>
+            </div>
+            <div class="col-sm-2" style="text-align:left">
+                <div class="custom-control custom-checkbox">
+                <input name="selector[]" id="ad_Checkbox1" class="custom-control-input" type="checkbox" value="1" />
+                <label class="custom-control-label" for="ad_Checkbox1">Animals</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                <input name="selector[]" id="ad_Checkbox2" class="custom-control-input" type="checkbox" value="2" />
+                <label class="custom-control-label" for="ad_Checkbox2">Buidling</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                <input name="selector[]" id="ad_Checkbox3" class="custom-control-input" type="checkbox" value="3" />
+                <label class="custom-control-label" for="ad_Checkbox3">City</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                <input name="selector[]" id="ad_Checkbox4" class="custom-control-input" type="checkbox" value="4" />
+                <label class="custom-control-label" for="ad_Checkbox4">Crowd</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                <input name="selector[]" id="ad_Checkbox5" class="custom-control-input" type="checkbox" value="5" />
+                <label class="custom-control-label" for="ad_Checkbox5">Landscape</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                <input name="selector[]" id="ad_Checkbox6" class="custom-control-input" type="checkbox" value="6" />
+                <label class="custom-control-label" for="ad_Checkbox6">People</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                <input name="selector[]" id="ad_Checkbox7" class="custom-control-input" type="checkbox" value="7" />
+                <label class="custom-control-label" for="ad_Checkbox7">Portrait</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                <input name="selector[]" id="ad_Checkbox8" class="custom-control-input" type="checkbox" value="8" />
+                <label class="custom-control-label" for="ad_Checkbox8">Crowd</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                <input name="selector[]" id="ad_Checkbox9" class="custom-control-input" type="checkbox" value="9" />
+                <label class="custom-control-label" for="ad_Checkbox9">Vehicle</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row " style="margin-top:30px;">
+            <div class="col-sm" style="text-align:center">
+            <button id="meskip" type="button" onclick="nextimg()" class="btn btn-info">Next</button>
+            </div>
+        </div>
+
+        <div id="end" style="margin-top:30px;">
+            <button id="stop" type="button" onclick="endtest()" class="btn btn-success">End Test</button>
+        </div>
+
+
+        <div id="end2" style="margin-top:5px;margin-bottom:30px;">
+        </div>
+     </div>
+    </div>
+
+  <script>
+    path ="images/";
+    n_img = 30;
+    init_img = 1;
+    var recordselection = [];
+    var slect = "";
+    $(document).ready(function(){
+        $("#imgplace").attr("src",path+"img"+init_img+".jpg");
+        $('#stop').prop('disabled', true);
+        /*$('.custom-checkbox input').on('change', function() {
+            slect = $('.custom-checkbox input:radio:checked').val()
+            alert(slect);
+        });*/
+    });
+
+    function nextimg() {
+        if (init_img>=n_img) {
+            if (init_img==n_img)
+                selectimg();
+            $('#meskip').prop('disabled', true);
+            $('#stop').prop('disabled', false);
+        }
+        else {
+            selectimg();
+            init_img += 1;
+            if (init_img<=n_img)
+                $("#imgplace").attr("src",path+"img"+init_img+".jpg");
+        }
+        $(".custom-control-input").find('span').removeClass('checked');
+        $(".custom-control-input").prop('checked', false);
+    }
+
+    function selectimg() {
+        var myRadio = $("input[name=imgSelect]");
+        var idVal = myRadio.filter(":checked").attr('id');
+        var selected = [];
+        $(':checkbox:checked').each(function(i){
+                selected.push($(this).val());
+        });
+        console.log(selected);
+        recordselection.push(["img"+init_img,selected]);
+    }
+
+    function endtest() {
+        var obj = {};
+        obj["results"] = recordselection;
+        var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
+
+        $('<a href="data:' + data + '" download="data.json">Download results</a>').appendTo('#end2');
+    }
+
+  </script>
+</body>
+</html>
